@@ -1,2 +1,3 @@
-# sploit
-A pentester in dev made by a beginner :)
+# [WIVVP (Work In Very Very Progress] sploit
+
+A pentester tool made my a beginner :)
