@@ -61,7 +61,7 @@ def checkAPT():
     toInstall = []
     for pack in packs:
         print("[*] Checking for {}{}{}...".format(fmt.ylw, pack, fmt.clear), end="")
-        i = subprocess.run(["hash", pack], stderr=subprocess.PIPE).returncode
+        i = subprocess.run(["which", pack], stderr=subprocess.PIPE).returncode
         if i == 0:
             print("[{}OK{}]".format(fmt.green, fmt.clear))
         else:

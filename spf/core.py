@@ -2,8 +2,7 @@ import os
 
 from spf import fmt
 from terminaltables import DoubleTable
-
-from importlib import reload
+import configparser
 
 def execf(filename):
     exec(compile(open(filename, "rb").read(), filename, 'exec') )#, globals, locals)
@@ -20,8 +19,8 @@ def show(arg):
     os.chdir(MODULE_DIR)
     if arg == "" :
         arg = "modules"
-    fmt.info("Showing all "+arg+" in "+MODULE_DIR)
-    table_data = [[fmt.red+"File"+fmt.blue,fmt.red+"Description"+fmt.blue]]
+    fmt.print_info("Showing all "+arg+" in "+MODULE_DIR)
+    table_data = [[fmt.red+"Module"+fmt.blue,fmt.red+"Description"+fmt.blue]]
     for dirname, dirnames, filenames in os.walk("."):
         # print path to all subdirectories first.
         for subdirname in dirnames:
@@ -31,8 +30,10 @@ def show(arg):
         for filename in filenames:
             if filename == "file.py":
                 mod = "/".join(os.path.join(dirname, filename).split("/")[1:-1])
-                print("Will try to import "+str(mod))
-                execf(mod+"/file.py")
-                table_data.append([ fmt.ylw+dirname+fmt.blue, fmt.ylw+"yay"+fmt.blue])
+                dirnameString = '/'.join(dirname.split('/')[1:])
+                config = configparser.ConfigParser()
+                config.read(dirname+'/file.cfg')
+                desc = config['main']['description'].strip('"')
+                table_data.append([ fmt.ylw+dirnameString+fmt.blue, fmt.ylw+desc+fmt.blue])
     table = DoubleTable(table_data)
     print(fmt.blue + table.table)
